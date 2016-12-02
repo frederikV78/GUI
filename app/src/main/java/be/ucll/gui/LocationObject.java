@@ -6,6 +6,16 @@ package be.ucll.gui;
 
 public class LocationObject {
 
+    public LocationObject(){}
+    public LocationObject(int _id, String naam, String info, double latitude, double longitude){
+        this._id = _id;
+        this.naam = naam;
+        this.info = info;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+
     public int get_id() {
         return _id;
     }

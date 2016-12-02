@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.IntegerRes;
 import android.util.Log;
+
+import java.util.ArrayList;
 
 import static android.database.sqlite.SQLiteDatabase.*;
 
@@ -152,6 +155,21 @@ public class DatabaseActivity {
         }
         return succes;
     }
+    public boolean DeleteUserFromDb(UserObject user){
+        boolean succes = false;
+
+        String where = USER_NAME + "= ?";
+        String[] whereArgs = {user.getNaam()};
+
+        this.openWriteableDB();
+        int rowCount = db.delete(USER_TABLE, where, whereArgs);
+        this.closeDB();
+
+        if (rowCount >= 0){
+            succes = true;
+        }
+        return succes;
+    }
 
     public boolean AddLocationToDb(LocationObject location){
         boolean succes = false;
@@ -168,6 +186,21 @@ public class DatabaseActivity {
         this.closeDB();
 
         if (rowID >= 0){
+            succes = true;
+        }
+        return succes;
+    }
+    public boolean DeleteLocationFromDb(LocationObject location){
+        boolean succes = false;
+
+        String where = LOCATION_NAME + "= ?";
+        String[] whereArgs = {location.getNaam()};
+
+        this.openWriteableDB();
+        int rowCount = db.delete(LOCATION_TABLE, where, whereArgs);
+        this.closeDB();
+
+        if (rowCount >= 0){
             succes = true;
         }
         return succes;
@@ -211,43 +244,43 @@ public class DatabaseActivity {
         }
     }
 
-    public UserObject GetLocationFromDb(String userRNummer){ //TODO
-        user = new UserObject();
+    public ArrayList<LocationObject> GetLocationsFromDb(){ //TODO
+        location = new LocationObject();
 
-        String where = USER_RNUMMER + "= ?";
-        String[] whereArgs = {String.valueOf(userRNummer)};
-        String[] columns = {String.valueOf(USER_NAME_COL),String.valueOf(USER_PASSWORD_COL),
-                String.valueOf(USER_DESCRIPTION_COL),String.valueOf(USER_DEPARTMENT_COL)};
+        String where = LOCATION_ID + ">= ?";
+        String[] whereArgs = {"0"};
 
         this.openReadableDB();
-        Cursor cursor = db.query(USER_TABLE,columns,where,whereArgs,null,null,null);
-        cursor.moveToFirst();
-        user = getLocationFromCursor(cursor);
+        Cursor cursor = db.query(LOCATION_TABLE,null,where,whereArgs,null,null,null);
+        ArrayList<LocationObject> locations = new ArrayList<LocationObject>();
+        while(cursor.moveToNext()){
+            locations.add(getLocationFromCursor(cursor));
+        }
         if (cursor != null)cursor.close();
         this.closeDB();
-        return user;
+        return locations;
     }
-    private static UserObject getLocationFromCursor(Cursor cursor){ //TODO
+    private static LocationObject getLocationFromCursor(Cursor cursor){ //TODO
         if (cursor == null || cursor.getCount() == 0){
             return null;
         }
         else{
             try{
-                UserObject user = new UserObject(
-                        cursor.getInt(USER_ID_COL),
-                        cursor.getString(USER_RNUMMER_COL),
-                        cursor.getString(USER_NAME_COL),
-                        cursor.getString(USER_PASSWORD_COL),
-                        cursor.getString(USER_DESCRIPTION_COL),
-                        cursor.getString(USER_DEPARTMENT_COL)
+                LocationObject location = new LocationObject(
+                        cursor.getInt(LOCATION_ID_COL),
+                        cursor.getString(LOCATION_NAME_COL),
+                        cursor.getString(LOCATION_INFO_COL),
+                        cursor.getDouble(LOCATION_LATITUDE_COL),
+                        cursor.getDouble(LOCATION_LONGITUDE_COL)
                 );
-                return user;
+                return location;
             }
             catch(Exception e){
                 return null;
             }
         }
     }
+
 
 
 
