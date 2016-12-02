@@ -5,6 +5,18 @@ package be.ucll.gui;
  */
 
 public class UserObject {
+    public UserObject(){}
+
+    public UserObject(int _id, String rNummer, String naam, String passwoord, String functie, String departement){
+        this._id = _id;
+        this.rNummer = rNummer;
+        this.naam = naam;
+        this.passwoord = passwoord;
+        this.functie = functie;
+        this.departement = departement;
+    }
+
+
 
     public int get_id() {
         return _id;

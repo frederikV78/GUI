@@ -2,6 +2,7 @@ package be.ucll.gui;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -181,7 +182,71 @@ public class DatabaseActivity {
                 String.valueOf(USER_DESCRIPTION_COL),String.valueOf(USER_DEPARTMENT_COL)};
 
         this.openReadableDB();
-        user = db.query(USER_TABLE,)
+        Cursor cursor = db.query(USER_TABLE,columns,where,whereArgs,null,null,null);
+        cursor.moveToFirst();
+        user = getUserFromCursor(cursor);
+        if (cursor != null)cursor.close();
+        this.closeDB();
+        return user;
+    }
+    private static UserObject getUserFromCursor(Cursor cursor){
+        if (cursor == null || cursor.getCount() == 0){
+            return null;
+        }
+        else{
+            try{
+                UserObject user = new UserObject(
+                        cursor.getInt(USER_ID_COL),
+                        cursor.getString(USER_RNUMMER_COL),
+                        cursor.getString(USER_NAME_COL),
+                        cursor.getString(USER_PASSWORD_COL),
+                        cursor.getString(USER_DESCRIPTION_COL),
+                        cursor.getString(USER_DEPARTMENT_COL)
+                );
+                return user;
+            }
+            catch(Exception e){
+                return null;
+            }
+        }
+    }
+
+    public UserObject GetLocationFromDb(String userRNummer){ //TODO
+        user = new UserObject();
+
+        String where = USER_RNUMMER + "= ?";
+        String[] whereArgs = {String.valueOf(userRNummer)};
+        String[] columns = {String.valueOf(USER_NAME_COL),String.valueOf(USER_PASSWORD_COL),
+                String.valueOf(USER_DESCRIPTION_COL),String.valueOf(USER_DEPARTMENT_COL)};
+
+        this.openReadableDB();
+        Cursor cursor = db.query(USER_TABLE,columns,where,whereArgs,null,null,null);
+        cursor.moveToFirst();
+        user = getLocationFromCursor(cursor);
+        if (cursor != null)cursor.close();
+        this.closeDB();
+        return user;
+    }
+    private static UserObject getLocationFromCursor(Cursor cursor){ //TODO
+        if (cursor == null || cursor.getCount() == 0){
+            return null;
+        }
+        else{
+            try{
+                UserObject user = new UserObject(
+                        cursor.getInt(USER_ID_COL),
+                        cursor.getString(USER_RNUMMER_COL),
+                        cursor.getString(USER_NAME_COL),
+                        cursor.getString(USER_PASSWORD_COL),
+                        cursor.getString(USER_DESCRIPTION_COL),
+                        cursor.getString(USER_DEPARTMENT_COL)
+                );
+                return user;
+            }
+            catch(Exception e){
+                return null;
+            }
+        }
     }
 
 
