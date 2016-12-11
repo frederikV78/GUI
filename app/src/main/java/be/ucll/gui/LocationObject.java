@@ -7,12 +7,14 @@ package be.ucll.gui;
 public class LocationObject {
 
     public LocationObject(){}
-    public LocationObject(int _id, String naam, String info, double latitude, double longitude){
+    public LocationObject(int _id, String naam, String info, double latitude, double longitude, int radius, int campus){
         this._id = _id;
         this.naam = naam;
         this.info = info;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.radius = radius;
+        this.campus = campus;
     }
 
 
@@ -56,12 +58,21 @@ public class LocationObject {
         this.longitude = longitude;
     }
 
+    public int getRadius() { return radius; }
+
+    public void setRadius(int radius) { this.radius = radius; }
+
+    public int getCampus() { return campus; }
+
+    public void setCampus(int campus) { this.campus = campus; }
+
     private int _id;
     private String naam;
     private String info;
     private double latitude;
     private double longitude;
-
+    private int radius;
+    private int campus;
 
 
 }

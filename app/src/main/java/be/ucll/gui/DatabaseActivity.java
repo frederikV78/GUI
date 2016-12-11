@@ -18,6 +18,14 @@ import static android.database.sqlite.SQLiteDatabase.*;
 
 public class DatabaseActivity {
 
+    //CONSTRUCTOR for main class
+    public DatabaseActivity(Context context){
+        if () {
+            DatabaseInitialisation di = new DatabaseInitialisation(context);
+        }
+        dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
+    }
+
     //DATABASE constants
     public static final String DB_NAME = "guidb.db";
     public static final int DB_VERSION = 1;
@@ -63,6 +71,12 @@ public class DatabaseActivity {
     public static final String LOCATION_LONGITUDE = "longitude";
     public static final int LOCATION_LONGITUDE_COL = 4;
 
+    public static final String LOCATION_RADIUS = "longitude";
+    public static final int LOCATION_RADIUS_COL = 4;
+
+    public static final String LOCATION_CAMPUS = "campus";
+    public static final int LOCATION_CAMPUS_COL = 5;
+
     //CREATE statements
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE " + USER_TABLE + " (" +
@@ -79,7 +93,9 @@ public class DatabaseActivity {
                     LOCATION_NAME + " TEXT NOT NULL UNIQUE, " +
                     LOCATION_INFO + " TEXT, " +
                     LOCATION_LATITUDE + " REAL, " +
-                    LOCATION_LONGITUDE + " REAL);";
+                    LOCATION_LONGITUDE + " REAL, " +
+                    LOCATION_RADIUS + " INTEGER" +
+                    LOCATION_CAMPUS + " INTEGER);";
 
     //DROP TABLE statements
     public static final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + USER_TABLE;
@@ -115,11 +131,6 @@ public class DatabaseActivity {
         }
     }
 //END DBHelper CLASS
-
-    //CONSTRUCTOR for main class
-    public DatabaseActivity(Context context){
-        dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
-    }
 
     //private methods
     private void openReadableDB(){
@@ -180,6 +191,8 @@ public class DatabaseActivity {
         cv.put(LOCATION_INFO, location.getInfo());
         cv.put(LOCATION_LATITUDE, location.getLatitude());
         cv.put(LOCATION_LONGITUDE, location.getLongitude());
+        cv.put(LOCATION_RADIUS, location.getRadius());
+        cv.put(LOCATION_CAMPUS, location.getCampus());
 
         this.openWriteableDB();
         long rowID = db.insert(LOCATION_TABLE, null, cv);
@@ -244,7 +257,7 @@ public class DatabaseActivity {
         }
     }
 
-    public ArrayList<LocationObject> GetLocationsFromDb(){ //TODO
+    public ArrayList<LocationObject> GetLocationsFromDb(){
         location = new LocationObject();
 
         String where = LOCATION_ID + ">= ?";
@@ -271,7 +284,9 @@ public class DatabaseActivity {
                         cursor.getString(LOCATION_NAME_COL),
                         cursor.getString(LOCATION_INFO_COL),
                         cursor.getDouble(LOCATION_LATITUDE_COL),
-                        cursor.getDouble(LOCATION_LONGITUDE_COL)
+                        cursor.getDouble(LOCATION_LONGITUDE_COL),
+                        cursor.getInt(LOCATION_RADIUS_COL),
+                        cursor.getInt(LOCATION_CAMPUS_COL)
                 );
                 return location;
             }
