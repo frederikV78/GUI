@@ -26,6 +26,7 @@ public class DatabaseActivity {
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
     }
 
+    
     //DATABASE constants
     public static final String DB_NAME = "guidb.db";
     public static final int DB_VERSION = 1;
