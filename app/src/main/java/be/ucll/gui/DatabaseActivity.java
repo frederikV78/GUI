@@ -20,13 +20,13 @@ public class DatabaseActivity {
 
     //CONSTRUCTOR for main class
     public DatabaseActivity(Context context){
-        if () {
+        /*if () {
             DatabaseInitialisation di = new DatabaseInitialisation(context);
-        }
+        }*/
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
     }
 
-    
+
     //DATABASE constants
     public static final String DB_NAME = "guidb.db";
     public static final int DB_VERSION = 1;

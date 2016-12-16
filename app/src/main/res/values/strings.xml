@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GUI</string>
+    <string name="login_title">Login</string>
+    <string name="login_username">Gebruikersnaam</string>
+    <string name="login_userpassword">Wachtwoord</string>
+    <string name="login_button"> Aanmelden </string>
 </resources>
