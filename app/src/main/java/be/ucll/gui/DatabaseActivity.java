@@ -20,7 +20,7 @@ public class DatabaseActivity {
 
     //CONSTRUCTOR for main class
     public DatabaseActivity(Context context){
-        if () {
+        if (joske) {
             DatabaseInitialisation di = new DatabaseInitialisation(context);
         }
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
