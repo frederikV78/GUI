@@ -15,7 +15,14 @@ public class UserObject {
         this.functie = functie;
         this.departement = departement;
     }
-
+    public UserObject(String rNummer, String naam, String passwoord, String functie, String departement){
+        //this._id = _id;
+        this.rNummer = rNummer;
+        this.naam = naam;
+        this.passwoord = passwoord;
+        this.functie = functie;
+        this.departement = departement;
+    }
 
 
     public int get_id() {
