@@ -18,16 +18,20 @@ import static android.database.sqlite.SQLiteDatabase.*;
 
 public class DatabaseActivity {
 
-    //CONSTRUCTOR for main class
-    public DatabaseActivity(Context context){
-        dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
-        DatabaseInitialisation di = new DatabaseInitialisation(context);
-        
-    }
-
     //DATABASE constants
     public static final String DB_NAME = "guidb.db";
     public static final int DB_VERSION = 1;
+
+    //CONSTRUCTOR for main class
+    public DatabaseActivity(Context context){
+        context.deleteDatabase(DB_NAME);
+        dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
+        //db.execSQL(DatabaseActivity.DROP_USER_TABLE);
+        //db.execSQL(DatabaseActivity.DROP_LOCATION_TABLE);
+        initiateUsers();
+
+    }
+
 
     //TABLE constants:
         //TABLE=gebruikers
@@ -70,17 +74,17 @@ public class DatabaseActivity {
     public static final String LOCATION_LONGITUDE = "longitude";
     public static final int LOCATION_LONGITUDE_COL = 4;
 
-    public static final String LOCATION_RADIUS = "longitude";
-    public static final int LOCATION_RADIUS_COL = 4;
+    public static final String LOCATION_RADIUS = "radius";
+    public static final int LOCATION_RADIUS_COL = 5;
 
     public static final String LOCATION_CAMPUS = "campus";
-    public static final int LOCATION_CAMPUS_COL = 5;
+    public static final int LOCATION_CAMPUS_COL = 6;
 
     //CREATE statements
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE " + USER_TABLE + " (" +
-                    USER_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT, " +
-                    USER_RNUMMER + " TEXT NOT NULL UNIQUE, " +
+                    USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    USER_RNUMMER + " TEXT NOT NULL, " +
                     USER_NAME + " TEXT, " +
                     USER_PASSWORD + " TEXT, " +
                     USER_DESCRIPTION + " TEXT, " +
@@ -88,12 +92,12 @@ public class DatabaseActivity {
 
     public static final String CREATE_LOCATION_TABLE =
             "CREATE TABLE " + LOCATION_TABLE + " (" +
-                    LOCATION_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT, " +
-                    LOCATION_NAME + " TEXT NOT NULL UNIQUE, " +
+                    LOCATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    LOCATION_NAME + " TEXT NOT NULL, " +
                     LOCATION_INFO + " TEXT, " +
                     LOCATION_LATITUDE + " REAL, " +
                     LOCATION_LONGITUDE + " REAL, " +
-                    LOCATION_RADIUS + " INTEGER" +
+                    LOCATION_RADIUS + " INTEGER," +
                     LOCATION_CAMPUS + " INTEGER);";
 
     //DROP TABLE statements
@@ -113,10 +117,13 @@ public class DatabaseActivity {
 
         public DBHelper(Context context, String name, CursorFactory factory, int version){
             super(context, name, factory, version);
+
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+            //db.execSQL(DROP_USER_TABLE);//extra
+            //db.execSQL(DROP_LOCATION_TABLE);//extra
             db.execSQL(CREATE_USER_TABLE);
             db.execSQL(CREATE_LOCATION_TABLE);
         }
@@ -145,11 +152,33 @@ public class DatabaseActivity {
     }
 
     // public methods
+    public void initiateUsers(){
+        user = new UserObject("r0486914","Elias","elias","student","IWT");
+        AddUserToDb(user);
+        user = new UserObject("r0488080","Frederik","frederik","student","IWT");
+        AddUserToDb(user);
+        user = new UserObject("r0581302","Tom","tom","student","IWT");
+        AddUserToDb(user);
+    }
+    public void Drop(){
+        db.execSQL(DROP_USER_TABLE);//extra
+        db.execSQL(DROP_LOCATION_TABLE);//extra
+    }
+
+    public void Create(){
+        db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_LOCATION_TABLE);
+    }
+
+    public SQLiteDatabase GetDb(){
+        return db;
+    }
+
     public boolean AddUserToDb(UserObject user){
         boolean succes = false;
 
         ContentValues cv = new ContentValues();
-        cv.put(USER_ID, user.get_id());
+        //cv.put(USER_ID, user.get_id());
         cv.put(USER_RNUMMER, user.getrNummer());
         cv.put(USER_NAME, user.getNaam());
         cv.put(USER_PASSWORD, user.getPasswoord());
@@ -185,7 +214,7 @@ public class DatabaseActivity {
         boolean succes = false;
 
         ContentValues cv = new ContentValues();
-        cv.put(LOCATION_ID, location.get_id());
+        //cv.put(LOCATION_ID, location.get_id());
         cv.put(LOCATION_NAME, location.getNaam());
         cv.put(LOCATION_INFO, location.getInfo());
         cv.put(LOCATION_LATITUDE, location.getLatitude());
@@ -223,11 +252,11 @@ public class DatabaseActivity {
 
         String where = USER_RNUMMER + "= ?";
         String[] whereArgs = {String.valueOf(userRNummer)};
-        String[] columns = {String.valueOf(USER_NAME_COL),String.valueOf(USER_PASSWORD_COL),
-                String.valueOf(USER_DESCRIPTION_COL),String.valueOf(USER_DEPARTMENT_COL)};
+        //String[] columns = {String.valueOf(USER_NAME_COL),String.valueOf(USER_PASSWORD_COL),
+        //        String.valueOf(USER_DESCRIPTION_COL),String.valueOf(USER_DEPARTMENT_COL)};
 
-        this.openReadableDB();
-        Cursor cursor = db.query(USER_TABLE,columns,where,whereArgs,null,null,null);
+        openReadableDB();
+        Cursor cursor = db.query(USER_TABLE,null,where,whereArgs,null,null,null);
         cursor.moveToFirst();
         user = getUserFromCursor(cursor);
         if (cursor != null)cursor.close();
@@ -255,6 +284,42 @@ public class DatabaseActivity {
             }
         }
     }
+
+    public LocationObject GetLocationFromDb(int locationId){ /////////////////////////////////////
+        location = new LocationObject();
+
+        String where = LOCATION_ID + "= ?";
+        String[] whereArgs = {String.valueOf(locationId)};
+        openReadableDB();
+        Cursor cursor = db.query(LOCATION_TABLE,null,where,whereArgs,null,null,null);
+        cursor.moveToFirst();
+        location = getOneLocationFromCursor(cursor);
+        if (cursor != null)cursor.close();
+        this.closeDB();
+        return location;
+    }
+    private static LocationObject getOneLocationFromCursor(Cursor cursor){
+        if (cursor == null || cursor.getCount() == 0){
+            return null;
+        }
+        else{
+            try{
+                LocationObject location = new LocationObject(
+                        cursor.getString(LOCATION_NAME_COL),
+                        cursor.getString(LOCATION_INFO_COL),
+                        cursor.getDouble(LOCATION_LATITUDE_COL),
+                        cursor.getDouble(LOCATION_LONGITUDE_COL),
+                        cursor.getInt(LOCATION_RADIUS_COL),
+                        cursor.getInt(LOCATION_CAMPUS_COL)
+                );
+                return location;
+            }
+            catch(Exception e){
+                return null;
+            }
+        }
+    }
+
 
     public ArrayList<LocationObject> GetLocationsFromDb(){
         location = new LocationObject();
@@ -295,8 +360,29 @@ public class DatabaseActivity {
         }
     }
 
+    public int getUsersCount() {
+        String countQuery = "SELECT * FROM " + USER_TABLE;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        try {
+            return cursor.getCount();
+        }
+        finally {
+            cursor.close();
+        }
+    }
 
-
+    public int getLocationsCount() {
+        String countQuery = "SELECT * FROM " + LOCATION_TABLE;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        try {
+            return cursor.getCount();
+        }
+        finally {
+            cursor.close();
+        }
+    }
 
 
 
