@@ -35,10 +35,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        DatabaseInitialisation databaseInit = new DatabaseInitialisation(this);
-
-
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -52,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                 UserObject getUser = new UserObject();
                 getUser = databaseActivity.GetUserFromDb(username);
 
-                Toast.makeText(getApplicationContext(), "" + getUser, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "" + getUser, Toast.LENGTH_LONG).show();
 
 
                 if (TextUsername.getText().toString().isEmpty() && TextPassword.getText().toString().isEmpty()) {
@@ -65,23 +61,24 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Geef een wachtwoord in", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    if(TextUsername.getText().toString().equals(getUser.getrNummer().toString())) {
+                    if (getUser != null) {
+                        if (TextUsername.getText().toString().equals(getUser.getrNummer().toString())) {
 
 
-                        if (TextPassword.getText().toString().equals(getUser.getPasswoord().toString())) {
+                            if (TextPassword.getText().toString().equals(getUser.getPasswoord().toString())) {
 
-                            Toast.makeText(getApplicationContext(), "Login succesvol, welkom " + getUser.getNaam().toString() + "!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Login succesvol, welkom " + getUser.getNaam().toString() + "!", Toast.LENGTH_LONG).show();
 
 
-                            startActivity(new Intent(getApplicationContext(), LoggedActivity.class));
+                                startActivity(new Intent(getApplicationContext(), LoggedActivity.class));
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Gebruikersnaam en/of wachtwoord is foutief", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Gebruikersnaam en/of wachtwoord is foutief", Toast.LENGTH_LONG).show();
+                            }
+
+
                         }
-
-
-                    }
-                    else{
+                    }else{
                         Toast.makeText(getApplicationContext(), "Gebruikersnaam en/of wachtwoord is foutief", Toast.LENGTH_LONG).show();
                     }
                 }
