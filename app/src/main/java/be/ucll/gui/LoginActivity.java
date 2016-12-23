@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        DatabaseInitialisation databaseInit = new DatabaseInitialisation(this);
+        //DatabaseInitialisation databaseInit = new DatabaseInitialisation(this);
 
 
 
@@ -63,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else if(TextPassword.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Geef een wachtwoord in", Toast.LENGTH_LONG).show();
+                }
+                if(getUser == null){
+                    Toast.makeText(getApplicationContext(), "NULL " + getUser.getNaam().toString() + "!", Toast.LENGTH_LONG).show();
                 }
                 else{
                     if(TextUsername.getText().toString().equals(getUser.getrNummer().toString())) {
