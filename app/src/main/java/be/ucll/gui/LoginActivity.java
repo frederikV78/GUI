@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                //
                 //String nummer = "abc";
                 //Object getUser[] = {nummer, nummer, nummer, nummer};
 
