@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseActivity dbo;
+    DatabaseActivity dbo;  //comment :p
     SQLiteDatabase db;
 
     @Override
