@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseActivity dbo;
+    DatabaseActivity dbo;  //comment :p
     SQLiteDatabase db;
 
     @Override
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("temp log", "*** START SHOWING TESTING DATA ***");
 
         dbo = new DatabaseActivity(this);
-        DatabaseInitialisation dbi = new DatabaseInitialisation(dbo);
+        //DatabaseInitialisation dbi = new DatabaseInitialisation(dbo);
 
 
         int usersCount = dbo.getUsersCount();
