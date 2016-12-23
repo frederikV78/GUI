@@ -24,14 +24,13 @@ public class DatabaseActivity {
 
     //CONSTRUCTOR for main class
     public DatabaseActivity(Context context){
-        context.deleteDatabase(DB_NAME);
+
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
         //db.execSQL(DatabaseActivity.DROP_USER_TABLE);
         //db.execSQL(DatabaseActivity.DROP_LOCATION_TABLE);
         initiateUsers();
 
     }
-
 
     //TABLE constants:
         //TABLE=gebruikers
