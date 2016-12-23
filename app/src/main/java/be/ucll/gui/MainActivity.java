@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("temp log", "*** START SHOWING TESTING DATA ***");
 
         dbo = new DatabaseActivity(this);
+        //dbo.Drop();
+        //dbo.Create();
         //DatabaseInitialisation dbi = new DatabaseInitialisation(dbo);
 
 
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         int locationsCount = dbo.getLocationsCount();
         Log.d("temp log", "There are " + locationsCount + " locations in the locaties TABLE!");
 
-        LocationObject location = dbo.GetLocationFromDb(7);
+        LocationObject location = dbo.GetLocationFromDb(1);
         Log.d("test location", location.getNaam());
         Log.d("test location", location.getInfo());
         Log.d("test location", String.valueOf(location.getLatitude()));

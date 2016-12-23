@@ -25,6 +25,9 @@ public class DatabaseActivity {
     //CONSTRUCTOR for main class
     public DatabaseActivity(Context context){
 
+        //db.execSQL(CLEAN_USER_TABLE);//extra
+        //db.execSQL(CLEAN_LOCATION_TABLE);//extra
+
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
         //db.execSQL(DatabaseActivity.DROP_USER_TABLE);
         //db.execSQL(DatabaseActivity.DROP_LOCATION_TABLE);
@@ -103,6 +106,9 @@ public class DatabaseActivity {
     public static final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + USER_TABLE;
     public static final String DROP_LOCATION_TABLE = "DROP TABLE IF EXISTS " + LOCATION_TABLE;
 
+    //CLEAN TABLES statements
+    public static final String CLEAN_USER_TABLE = "DELETE * FROM " + USER_TABLE;
+    public static final String CLEAN_LOCATION_TABLE = "DELETE * FROM " + LOCATION_TABLE;
 
 
     //PUBLIC FUNCTIONS
@@ -121,8 +127,8 @@ public class DatabaseActivity {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            //db.execSQL(DROP_USER_TABLE);//extra
-            //db.execSQL(DROP_LOCATION_TABLE);//extra
+            //db.execSQL(CLEAN_USER_TABLE);//extra
+            //db.execSQL(CLEAN_LOCATION_TABLE);//extra
             db.execSQL(CREATE_USER_TABLE);
             db.execSQL(CREATE_LOCATION_TABLE);
         }
@@ -153,13 +159,23 @@ public class DatabaseActivity {
     // public methods
 
     public void Drop(){
+        //db.execSQL(CLEAN_USER_TABLE);//extra
+        //db.execSQL(CLEAN_LOCATION_TABLE);//extra
+        //db.delete(USER_TABLE,null,null);
+        //db.delete(LOCATION_TABLE,null,null);
+        this.openWriteableDB();
         db.execSQL(DROP_USER_TABLE);//extra
         db.execSQL(DROP_LOCATION_TABLE);//extra
+        this.closeDB();
     }
 
     public void Create(){
+        //db.execSQL(DROP_USER_TABLE);//extra
+        //db.execSQL(DROP_LOCATION_TABLE);//extra
+        this.openWriteableDB();
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
+        this.closeDB();
     }
 
     public SQLiteDatabase GetDb(){

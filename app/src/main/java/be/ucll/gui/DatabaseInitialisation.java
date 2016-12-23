@@ -20,12 +20,12 @@ public class DatabaseInitialisation {
 
         dbo = dboPassed;
 
-        //dbo.Drop();
-        //dbo.Create();
+        //dboPassed.Drop();
+        //dboPassed.Create();
 
         //dbo.initiateUsers();
         //initiateLocations();
-        //initiateUsers();
+        initiateUsers();
         initiateLocations();
     }
 
@@ -40,6 +40,13 @@ public class DatabaseInitialisation {
 
     private void initiateLocations(){
         //adding Campi
+        location = new LocationObject("Tom thuis","Welkom op het erf!"
+                ,50.949325,5.340922,50,1);
+        dbo.AddLocationToDb(location);
+        location = new LocationObject("Tom huis","Welkom aan de voordeur!"
+                ,50.949325,5.340922,20,0);
+        dbo.AddLocationToDb(location);
+
         location = new LocationObject("CAMPUS COMENIUS","Campus Comenius is de enige campus van UC Leuven-Limburg die binnen de ring van Leuven ligt. Het station van Leuven is – letterlijk – vlak bij de deur. De campus huist momenteel de opleidingen Kleuteronderwijs, Lager Onderwijs en Secundair Onderwijs. Er worden ook postgraduaten aangeboden."
                 ,50.879153,4.715298,100,1);
         dbo.AddLocationToDb(location);
