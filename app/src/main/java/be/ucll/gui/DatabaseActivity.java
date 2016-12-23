@@ -28,7 +28,7 @@ public class DatabaseActivity {
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
         //db.execSQL(DatabaseActivity.DROP_USER_TABLE);
         //db.execSQL(DatabaseActivity.DROP_LOCATION_TABLE);
-        initiateUsers();
+        //initiateUsers();
 
     }
 
@@ -151,14 +151,7 @@ public class DatabaseActivity {
     }
 
     // public methods
-    public void initiateUsers(){
-        user = new UserObject("r0486914","Elias","elias","student","IWT");
-        AddUserToDb(user);
-        user = new UserObject("r0488080","Frederik","frederik","student","IWT");
-        AddUserToDb(user);
-        user = new UserObject("r0581302","Tom","tom","student","IWT");
-        AddUserToDb(user);
-    }
+
     public void Drop(){
         db.execSQL(DROP_USER_TABLE);//extra
         db.execSQL(DROP_LOCATION_TABLE);//extra
