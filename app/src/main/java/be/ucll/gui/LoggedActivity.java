@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -231,11 +232,25 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
         }
     }
 
+    final DatabaseActivity databaseActivity = new DatabaseActivity(this);
+    LocationObject location;
+
     public void getGeofenceFromDb() {
+
+        ArrayList<LocationObject> locationsArrayList = new ArrayList<LocationObject>();
+        locationsArrayList = databaseActivity.GetLocationsFromDb();
+        Iterator itr = locationsArrayList.iterator();
+        
+        while(itr.hasNext()){
+            location = new LocationObject();
+            location = (LocationObject)itr.next();
+            UCLL_LANDMARKS.put(location.getNaam(), new LatLng(location.getLatitude(), location.getLongitude()));
+        }
+
         // San Francisco International Airport.
-        UCLL_LANDMARKS.put("UCLL", new LatLng(50.928554, 5.395742));
+        //UCLL_LANDMARKS.put("UCLL", new LatLng(50.928554, 5.395742));
 
         // Googleplex.
-        UCLL_LANDMARKS.put("THUIS", new LatLng(50.949325,5.340922));
+        //UCLL_LANDMARKS.put("THUIS", new LatLng(50.949325,5.340922));
     }
 }
