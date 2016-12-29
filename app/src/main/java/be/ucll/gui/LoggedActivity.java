@@ -240,7 +240,7 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
         ArrayList<LocationObject> locationsArrayList = new ArrayList<LocationObject>();
         locationsArrayList = databaseActivity.GetLocationsFromDb();
         Iterator itr = locationsArrayList.iterator();
-        
+
         while(itr.hasNext()){
             location = new LocationObject();
             location = (LocationObject)itr.next();
