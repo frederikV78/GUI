@@ -76,7 +76,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             );
 
             // Send notification and log the transition details.
-            sendNotification(geofenceTransitionDetails);
+            //sendNotification(geofenceTransitionDetails);
             showNotification(geofenceTransitionDetails);
 
             Log.i(TAG, geofenceTransitionDetails);
@@ -113,17 +113,17 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     /**
      * Posts a notification in the notification bar when a transition is detected.
-     * If the user clicks the notification, control goes to the MainActivity.
+     * If the user clicks the notification, control goes to the LoggedActivity.
      */
     private void sendNotification(String notificationDetails) {
-        // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+        // Create an explicit content Intent that starts the logged Activity.
+        Intent notificationIntent = new Intent(getApplicationContext(), LoggedActivity.class);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
-        // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(MainActivity.class);
+        // Add the logged Activity to the task stack as the parent.
+        stackBuilder.addParentStack(LoggedActivity.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);
@@ -164,25 +164,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 .setContentText(notificationDetails);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(1, mBuilder.build());
-        /*// 1. Create a NotificationManager
-        NotificationManager notificationManager =
-                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // 2. Create a PendingIntent for AllGeofencesActivity
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingNotificationIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // 3. Create and send a notification
-        Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle(notificationDetails)
-                .setContentText("return to app")
-                .setContentIntent(pendingNotificationIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .build();
-        notificationManager.notify(0, notification);*/
     }
 
     /**
