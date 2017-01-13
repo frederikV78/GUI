@@ -6,30 +6,22 @@ import android.content.Context;
 import android.util.Log;
 
 /**
- * Created by mrx on 12/9/2016.
+ * Created by Frederik on 12/9/2016.
  */
 
 public class DatabaseInitialisation {
     DatabaseActivity dbo;
     UserObject user;
     LocationObject location;
-    SQLiteDatabase db;
 
 
     public DatabaseInitialisation(DatabaseActivity dboPassed){
-
-        dbo = dboPassed;
-
-        //dboPassed.Drop();
-        //dboPassed.Create();
-
-        //dbo.initiateUsers();
-        //initiateLocations();
         initiateUsers();
         initiateLocations();
     }
 
     public void initiateUsers(){
+        //adding users
         user = new UserObject("r0486914","Elias","elias","student","IWT");
         dbo.AddUserToDb(user);
         user = new UserObject("r0488080","Frederik","frederik","student","IWT");
