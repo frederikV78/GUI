@@ -11,7 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -43,6 +49,7 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
     protected ArrayList<Geofence> mGeofenceList;
     private PendingIntent mGeofencePendingIntent;
     private boolean mGeofencesAdded;
+    public ListView itemsListView;
 
     private static final HashMap<String, LatLng> UCLL_LANDMARKS = new HashMap<String, LatLng>();
 
@@ -52,6 +59,7 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
         setContentView(R.layout.activity_logged);
 
         buttonLogOut = (Button) findViewById(R.id.buttonLogOut);
+        itemsListView = (ListView) findViewById(R.id.itemsListView);
 
         buttonLogOut.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -284,8 +292,5 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
             location = (LocationObject)itr.next();
             UCLL_LANDMARKS.put(location.getNaam(), new LatLng(location.getLatitude(), location.getLongitude()));
         }
-
-        //THUIS
-        UCLL_LANDMARKS.put("THUIS", new LatLng(50.949325,5.340922));
     }
 }

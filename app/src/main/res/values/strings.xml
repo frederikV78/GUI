@@ -31,4 +31,7 @@
     <string name="unknown_geofence_transition">Unknown Transition</string>
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
+
+    <string name="item_naam">GeoNaam</string>
+    <string name="item_info">GeoInfo</string>
 </resources>
