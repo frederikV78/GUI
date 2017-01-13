@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import static android.database.sqlite.SQLiteDatabase.*;
 
 /**
- * Created by mrx on 11/25/2016.
+ * Created by Frederik on 11/25/2016.
  */
 
 public class DatabaseActivity {
+
+    //THE PUBLIC DATABASE FUNCTIONS ARE FOUND AT THE LOWER END OF THIS CLASS/DOCUMENT
 
     //DATABASE constants
     public static final String DB_NAME = "guidb.db";
@@ -24,15 +26,7 @@ public class DatabaseActivity {
 
     //CONSTRUCTOR for main class
     public DatabaseActivity(Context context){
-
-        //db.execSQL(CLEAN_USER_TABLE);//extra
-        //db.execSQL(CLEAN_LOCATION_TABLE);//extra
-
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
-        //db.execSQL(DatabaseActivity.DROP_USER_TABLE);
-        //db.execSQL(DatabaseActivity.DROP_LOCATION_TABLE);
-        //initiateUsers();
-
     }
 
     //TABLE constants:
@@ -111,7 +105,6 @@ public class DatabaseActivity {
     public static final String CLEAN_LOCATION_TABLE = "DELETE * FROM " + LOCATION_TABLE;
 
 
-    //PUBLIC FUNCTIONS
     private UserObject user;
     private LocationObject location;
     private SQLiteDatabase db;
@@ -122,13 +115,10 @@ public class DatabaseActivity {
 
         public DBHelper(Context context, String name, CursorFactory factory, int version){
             super(context, name, factory, version);
-
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            //db.execSQL(CLEAN_USER_TABLE);//extra
-            //db.execSQL(CLEAN_LOCATION_TABLE);//extra
             db.execSQL(CREATE_USER_TABLE);
             db.execSQL(CREATE_LOCATION_TABLE);
         }
@@ -156,30 +146,25 @@ public class DatabaseActivity {
         }
     }
 
-    // public methods
+
+    //*************************************
+        //PUBLIC FUNCTIONS
+                        //START PUBLIC FUNCTIONS
+        //PUBLIC FUNCTIONS
+    //*************************************
 
     public void Drop(){
-        //db.execSQL(CLEAN_USER_TABLE);//extra
-        //db.execSQL(CLEAN_LOCATION_TABLE);//extra
-        //db.delete(USER_TABLE,null,null);
-        //db.delete(LOCATION_TABLE,null,null);
         this.openWriteableDB();
-        db.execSQL(DROP_USER_TABLE);//extra
-        db.execSQL(DROP_LOCATION_TABLE);//extra
+        db.execSQL(DROP_USER_TABLE);
+        db.execSQL(DROP_LOCATION_TABLE);
         this.closeDB();
     }
 
     public void Create(){
-        //db.execSQL(DROP_USER_TABLE);//extra
-        //db.execSQL(DROP_LOCATION_TABLE);//extra
         this.openWriteableDB();
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
         this.closeDB();
-    }
-
-    public SQLiteDatabase GetDb(){
-        return db;
     }
 
     public boolean AddUserToDb(UserObject user){
@@ -271,29 +256,44 @@ public class DatabaseActivity {
         this.closeDB();
         return user;
     }
-    private static UserObject getUserFromCursor(Cursor cursor){
-        if (cursor == null || cursor.getCount() == 0){
-            return null;
-        }
-        else{
-            try{
-                UserObject user = new UserObject(
-                        cursor.getInt(USER_ID_COL),
-                        cursor.getString(USER_RNUMMER_COL),
-                        cursor.getString(USER_NAME_COL),
-                        cursor.getString(USER_PASSWORD_COL),
-                        cursor.getString(USER_DESCRIPTION_COL),
-                        cursor.getString(USER_DEPARTMENT_COL)
-                );
-                return user;
-            }
-            catch(Exception e){
-                return null;
-            }
-        }
-    }
+    //The following function is a helping fuction for another public function found above
+                private static UserObject getUserFromCursor(Cursor cursor){
+                    if (cursor == null || cursor.getCount() == 0){
+                        return null;
+                    }
+                    else{
+                        try{
+                            UserObject user = new UserObject(
+                                    cursor.getInt(USER_ID_COL),
+                                    cursor.getString(USER_RNUMMER_COL),
+                                    cursor.getString(USER_NAME_COL),
+                                    cursor.getString(USER_PASSWORD_COL),
+                                    cursor.getString(USER_DESCRIPTION_COL),
+                                    cursor.getString(USER_DEPARTMENT_COL)
+                            );
+                            return user;
+                        }
+                        catch(Exception e){
+                            return null;
+                        }
+                    }
+                }
 
-    public LocationObject GetLocationFromDb(int locationId){ /////////////////////////////////////
+
+    public LocationObject GetLocationFromDb(String locationName){
+        location = new LocationObject();
+
+        String where = LOCATION_NAME + "= ?";
+        String[] whereArgs = {String.valueOf(locationName)};
+        openReadableDB();
+        Cursor cursor = db.query(LOCATION_TABLE,null,where,whereArgs,null,null,null);
+        cursor.moveToFirst();
+        location = getOneLocationFromCursor(cursor);
+        if (cursor != null)cursor.close();
+        this.closeDB();
+        return location;
+    }
+    public LocationObject GetLocationFromDb(int locationId){
         location = new LocationObject();
 
         String where = LOCATION_ID + "= ?";
@@ -306,27 +306,28 @@ public class DatabaseActivity {
         this.closeDB();
         return location;
     }
-    private static LocationObject getOneLocationFromCursor(Cursor cursor){
-        if (cursor == null || cursor.getCount() == 0){
-            return null;
-        }
-        else{
-            try{
-                LocationObject location = new LocationObject(
-                        cursor.getString(LOCATION_NAME_COL),
-                        cursor.getString(LOCATION_INFO_COL),
-                        cursor.getDouble(LOCATION_LATITUDE_COL),
-                        cursor.getDouble(LOCATION_LONGITUDE_COL),
-                        cursor.getInt(LOCATION_RADIUS_COL),
-                        cursor.getInt(LOCATION_CAMPUS_COL)
-                );
-                return location;
-            }
-            catch(Exception e){
-                return null;
-            }
-        }
-    }
+    //The following function is a helping fuction for another public function found above
+                private static LocationObject getOneLocationFromCursor(Cursor cursor){
+                    if (cursor == null || cursor.getCount() == 0){
+                        return null;
+                    }
+                    else{
+                        try{
+                            LocationObject location = new LocationObject(
+                                    cursor.getString(LOCATION_NAME_COL),
+                                    cursor.getString(LOCATION_INFO_COL),
+                                    cursor.getDouble(LOCATION_LATITUDE_COL),
+                                    cursor.getDouble(LOCATION_LONGITUDE_COL),
+                                    cursor.getInt(LOCATION_RADIUS_COL),
+                                    cursor.getInt(LOCATION_CAMPUS_COL)
+                            );
+                            return location;
+                        }
+                        catch(Exception e){
+                            return null;
+                        }
+                    }
+                }
 
 
     public ArrayList<LocationObject> GetLocationsFromDb(){
@@ -345,28 +346,29 @@ public class DatabaseActivity {
         this.closeDB();
         return locations;
     }
-    private static LocationObject getLocationFromCursor(Cursor cursor){ //TODO
-        if (cursor == null || cursor.getCount() == 0){
-            return null;
-        }
-        else{
-            try{
-                LocationObject location = new LocationObject(
-                        cursor.getInt(LOCATION_ID_COL),
-                        cursor.getString(LOCATION_NAME_COL),
-                        cursor.getString(LOCATION_INFO_COL),
-                        cursor.getDouble(LOCATION_LATITUDE_COL),
-                        cursor.getDouble(LOCATION_LONGITUDE_COL),
-                        cursor.getInt(LOCATION_RADIUS_COL),
-                        cursor.getInt(LOCATION_CAMPUS_COL)
-                );
-                return location;
-            }
-            catch(Exception e){
-                return null;
-            }
-        }
-    }
+    //The following function is a helping fuction for another public function found above
+                private static LocationObject getLocationFromCursor(Cursor cursor){
+                    if (cursor == null || cursor.getCount() == 0){
+                        return null;
+                    }
+                    else{
+                        try{
+                            LocationObject location = new LocationObject(
+                                    cursor.getInt(LOCATION_ID_COL),
+                                    cursor.getString(LOCATION_NAME_COL),
+                                    cursor.getString(LOCATION_INFO_COL),
+                                    cursor.getDouble(LOCATION_LATITUDE_COL),
+                                    cursor.getDouble(LOCATION_LONGITUDE_COL),
+                                    cursor.getInt(LOCATION_RADIUS_COL),
+                                    cursor.getInt(LOCATION_CAMPUS_COL)
+                            );
+                            return location;
+                        }
+                        catch(Exception e){
+                            return null;
+                        }
+                    }
+                }
 
     public int getUsersCount() {
         String countQuery = "SELECT * FROM " + USER_TABLE;
@@ -392,6 +394,11 @@ public class DatabaseActivity {
         }
     }
 
+    //*************************************
+        //PUBLIC FUNCTIONS
+                    //END PUBLIC FUNCTIONS
+        //PUBLIC FUNCTIONS
+    //*************************************
 
 
 
