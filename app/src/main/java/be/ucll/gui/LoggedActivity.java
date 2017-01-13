@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -292,5 +293,9 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
             location = (LocationObject)itr.next();
             UCLL_LANDMARKS.put(location.getNaam(), new LatLng(location.getLatitude(), location.getLongitude()));
         }
+    }
+
+    public void setListAdapter(SimpleAdapter adapter){
+        itemsListView.setAdapter(adapter);
     }
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
@@ -21,11 +22,13 @@ import android.widget.TextView;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static android.R.id.list;
+import static android.media.CamcorderProfile.get;
 import static be.ucll.gui.R.id.itemsListView;
 
 /**
@@ -96,12 +99,12 @@ public class GeofenceTransitionsIntentService extends IntentService {
             //sendNotification(geofenceTransitionDetails);
             showNotification(geofenceTransitionDetails);
 
-            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER)
+            /*if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER)
                 {
                     locationItem = new LocationItem();
                     locationItem.setNaam(triggeringGeofences.toString());
                     location = new LocationObject();
-                    location = databaseActivity.GetLocationsFromDb(triggeringGeofences.toString());
+                    location = databaseActivity.GetLocationFromDb(geofenceTransitionDetails);
                     locationInfo = location.getInfo();
                     locationItem.setInfo(locationInfo);
                     listLocations.addItem(locationItem);
@@ -111,7 +114,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 {
                     locationItem = new LocationItem();
                     locationItem.setNaam(triggeringGeofences.toString());
-                    location = databaseActivity.GetLocationsFromDb(triggeringGeofences.toString());
+                    location = databaseActivity.GetLocationFromDb(geofenceTransitionDetails);
                     locationInfo = location.getInfo();
                     locationItem.setInfo(locationInfo);
                     listLocations.removeItem(locationItem);
@@ -135,10 +138,11 @@ public class GeofenceTransitionsIntentService extends IntentService {
             String[] from = {"naam", "info"};
             int[] to = {R.id.naamTextView, R.id.infoTextView};
 
+            LoggedActivity loggedActivity = new LoggedActivity();
             // create and set the adapter
             SimpleAdapter adapter =
-                    new SimpleAdapter(this, data, resource, from, to);
-            itemsListView.setAdapter(adapter);
+                    new SimpleAdapter(loggedActivity, data, resource, from, to);
+            loggedActivity.setListAdapter(adapter);*/
 
             Log.i(TAG, geofenceTransitionDetails);
         } else {

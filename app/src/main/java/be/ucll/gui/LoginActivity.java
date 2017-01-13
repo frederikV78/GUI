@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final DatabaseActivity databaseActivity = new DatabaseActivity(this);
 
-        DatabaseInitialisation databaseInitialisation = new DatabaseInitialisation(databaseActivity);
+        //DatabaseInitialisation databaseInitialisation = new DatabaseInitialisation(databaseActivity);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
 
