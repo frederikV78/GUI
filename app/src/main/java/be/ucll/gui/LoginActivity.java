@@ -33,7 +33,9 @@ public class LoginActivity extends AppCompatActivity {
 
         final DatabaseActivity databaseActivity = new DatabaseActivity(this);
 
-        //DatabaseInitialisation databaseInitialisation = new DatabaseInitialisation(databaseActivity);
+        if (LoggedActivity.UCLL_LANDMARKS.isEmpty()) { //Controle of de HAshMap gevuld is vanuit de database, anders gaan we deze vhier vullen
+            DatabaseInitialisation databaseInitialisation = new DatabaseInitialisation(databaseActivity);
+        }
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
 
