@@ -16,6 +16,7 @@ public class DatabaseInitialisation {
 
 
     public DatabaseInitialisation(DatabaseActivity dboPassed){
+        dbo = dboPassed;
         initiateUsers();
         initiateLocations();
     }

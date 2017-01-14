@@ -52,7 +52,7 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
     private boolean mGeofencesAdded;
     public ListView itemsListView;
 
-    private static final HashMap<String, LatLng> UCLL_LANDMARKS = new HashMap<String, LatLng>();
+    public static final HashMap<String, LatLng> UCLL_LANDMARKS = new HashMap<String, LatLng>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
