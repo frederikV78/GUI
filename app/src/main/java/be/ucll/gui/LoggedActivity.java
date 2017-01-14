@@ -279,17 +279,15 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
         }
     }
 
-    final DatabaseActivity databaseActivity = new DatabaseActivity(this);
-    LocationObject location;
+
 
     public void getGeofenceFromDb() {
-
-        ArrayList<LocationObject> locationsArrayList = new ArrayList<LocationObject>();
-        locationsArrayList = databaseActivity.GetLocationsFromDb();
+        final DatabaseActivity databaseActivity = new DatabaseActivity(this);
+        LocationObject location;
+        ArrayList<LocationObject> locationsArrayList = databaseActivity.GetLocationsFromDb();
         Iterator itr = locationsArrayList.iterator();
 
         while(itr.hasNext()){
-            location = new LocationObject();
             location = (LocationObject)itr.next();
             UCLL_LANDMARKS.put(location.getNaam(), new LatLng(location.getLatitude(), location.getLongitude()));
         }
