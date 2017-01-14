@@ -7,16 +7,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.SimpleAdapter;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static android.R.id.list;
+import static android.media.CamcorderProfile.get;
+import static be.ucll.gui.R.id.itemsListView;
 
 /**
  * Listener for geofence transition changes.
@@ -28,6 +41,13 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     protected static final String TAG = "GeofenceTransitionsIS";
+
+    protected LocationItem locationItem;
+    protected LocationList listLocations;
+    protected String locationInfo;
+    LocationObject location;
+
+    final DatabaseActivity databaseActivity = new DatabaseActivity(this);
 
     /**
      * This constructor is required, and calls the super IntentService(String)
@@ -76,8 +96,53 @@ public class GeofenceTransitionsIntentService extends IntentService {
             );
 
             // Send notification and log the transition details.
-            sendNotification(geofenceTransitionDetails);
+            //sendNotification(geofenceTransitionDetails);
             showNotification(geofenceTransitionDetails);
+
+            /*if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER)
+                {
+                    locationItem = new LocationItem();
+                    locationItem.setNaam(triggeringGeofences.toString());
+                    location = new LocationObject();
+                    location = databaseActivity.GetLocationFromDb(geofenceTransitionDetails);
+                    locationInfo = location.getInfo();
+                    locationItem.setInfo(locationInfo);
+                    listLocations.addItem(locationItem);
+                }
+
+            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT)
+                {
+                    locationItem = new LocationItem();
+                    locationItem.setNaam(triggeringGeofences.toString());
+                    location = databaseActivity.GetLocationFromDb(geofenceTransitionDetails);
+                    locationInfo = location.getInfo();
+                    locationItem.setInfo(locationInfo);
+                    listLocations.removeItem(locationItem);
+                }
+
+            // get the items for the feed
+            ArrayList<LocationItem> items = listLocations.getAllItems();
+
+            // create a List of Map<String, ?> objects
+            ArrayList<HashMap<String, String>> data =
+                    new ArrayList<HashMap<String, String>>();
+            for (LocationItem item : items) {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("naam", item.getTitle());
+                map.put("info", item.getDescription());
+                data.add(map);
+            }
+
+            // create the resource, from, and to variables
+            int resource = R.layout.listview_item;
+            String[] from = {"naam", "info"};
+            int[] to = {R.id.naamTextView, R.id.infoTextView};
+
+            LoggedActivity loggedActivity = new LoggedActivity();
+            // create and set the adapter
+            SimpleAdapter adapter =
+                    new SimpleAdapter(loggedActivity, data, resource, from, to);
+            loggedActivity.setListAdapter(adapter);*/
 
             Log.i(TAG, geofenceTransitionDetails);
         } else {
@@ -111,52 +176,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
         return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
     }
 
-    /**
-     * Posts a notification in the notification bar when a transition is detected.
-     * If the user clicks the notification, control goes to the MainActivity.
-     */
-    private void sendNotification(String notificationDetails) {
-        // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-
-        // Construct a task stack.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
-        // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(MainActivity.class);
-
-        // Push the content Intent onto the stack.
-        stackBuilder.addNextIntent(notificationIntent);
-
-        // Get a PendingIntent containing the entire back stack.
-        PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Get a notification builder that's compatible with platform versions >= 4
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-        // Define the notification settings.
-        builder.setSmallIcon(android.R.drawable.ic_dialog_info)
-                // In a real app, you may want to use a library like Volley
-                // to decode the Bitmap.
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        android.R.drawable.ic_dialog_info))
-                .setColor(Color.RED)
-                .setContentTitle(notificationDetails)
-                .setContentText(getString(R.string.geofence_transition_notification_text))
-                .setContentIntent(notificationPendingIntent);
-
-        // Dismiss notification once the user touches it.
-        builder.setAutoCancel(true);
-
-        // Get an instance of the Notification manager
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Issue the notification
-        mNotificationManager.notify(0, builder.build());
-    }
-
     private void showNotification(String notificationDetails) {
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
@@ -164,25 +183,6 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 .setContentText(notificationDetails);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(1, mBuilder.build());
-        /*// 1. Create a NotificationManager
-        NotificationManager notificationManager =
-                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // 2. Create a PendingIntent for AllGeofencesActivity
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingNotificationIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // 3. Create and send a notification
-        Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle(notificationDetails)
-                .setContentText("return to app")
-                .setContentIntent(pendingNotificationIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .build();
-        notificationManager.notify(0, notification);*/
     }
 
     /**

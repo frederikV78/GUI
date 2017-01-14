@@ -20,6 +20,8 @@
 
         <activity android:name=".LoggedActivity">
         </activity>
-    </application>
 
+        <service android:name=".GeofenceTransitionsIntentService"/>
+
+    </application>
 </manifest>
