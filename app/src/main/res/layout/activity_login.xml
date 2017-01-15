@@ -18,20 +18,6 @@
         android:textSize="36sp" />
 
     <TextView
-        android:text="@string/login_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="75dp"
-        android:id="@+id/textView4"
-        android:textSize="24sp"
-        android:textColor="@android:color/background_light" />
-
-    <TextView
         android:text="Wachtwoord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,33 +27,6 @@
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignStart="@+id/textView4"
         android:textColor="@android:color/background_light" />
-
-    <Button
-        android:text="@string/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonLogin"
-        android:textSize="24sp"
-        android:elevation="17dp"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:background="?android:attr/colorEdgeEffect"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="74dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/TextUsername"
-        android:background="@android:color/background_light"
-        android:textSize="24sp"
-        android:layout_below="@+id/textView4"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4"
-        android:layout_marginTop="16dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -82,9 +41,46 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignStart="@+id/textView2" />
 
+    <Button
+        android:text="@string/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonLogin"
+        android:textSize="24sp"
+        android:elevation="17dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/background_light"
+        android:background="?android:attr/colorEdgeEffect"
+        android:layout_marginBottom="17dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/TextUsername"
+        android:background="@android:color/background_light"
+        android:textSize="24sp"
+        android:layout_above="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginBottom="24dp" />
 
-
+    <TextView
+        android:text="@string/login_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp"
+        android:id="@+id/textView4"
+        android:textSize="24sp"
+        android:textColor="@android:color/background_light"
+        android:layout_above="@+id/TextUsername"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="14dp" />
 
 
 </RelativeLayout>

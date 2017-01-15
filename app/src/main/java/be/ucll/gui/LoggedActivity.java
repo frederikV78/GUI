@@ -52,7 +52,9 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
     private boolean mGeofencesAdded;
     public ListView itemsListView;
 
-    private static final HashMap<String, LatLng> UCLL_LANDMARKS = new HashMap<String, LatLng>();
+    protected Intent intent;
+
+    public static final HashMap<String, LatLng> UCLL_LANDMARKS = new HashMap<String, LatLng>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
             @Override
             public void onClick(View v) {
                 removeGeofences();
+                //PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT).cancel();
                 Toast.makeText(getApplicationContext(), "U bent uitgelogd", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
@@ -174,6 +177,7 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
                     // This is the same pending intent that was used in addGeofences().
                     getGeofencePendingIntent()
             ).setResultCallback(this); // Result processed in onResult().
+            PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT).cancel();
         } catch (SecurityException securityException) {
             // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
             logSecurityException(securityException);
@@ -245,7 +249,8 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
         }
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        //Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -279,17 +284,15 @@ public class LoggedActivity extends AppCompatActivity implements ConnectionCallb
         }
     }
 
-    final DatabaseActivity databaseActivity = new DatabaseActivity(this);
-    LocationObject location;
+
 
     public void getGeofenceFromDb() {
-
-        ArrayList<LocationObject> locationsArrayList = new ArrayList<LocationObject>();
-        locationsArrayList = databaseActivity.GetLocationsFromDb();
+        final DatabaseActivity databaseActivity = new DatabaseActivity(this);
+        LocationObject location;
+        ArrayList<LocationObject> locationsArrayList = databaseActivity.GetLocationsFromDb();
         Iterator itr = locationsArrayList.iterator();
 
         while(itr.hasNext()){
-            location = new LocationObject();
             location = (LocationObject)itr.next();
             UCLL_LANDMARKS.put(location.getNaam(), new LatLng(location.getLatitude(), location.getLongitude()));
         }
