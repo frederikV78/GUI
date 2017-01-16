@@ -71,6 +71,8 @@ public class DatabaseInitialisation {
                 ,50.928472,5.388768,100,1);
         dbo.AddLocationToDb(location);
 
+
+
         //Adding departements and buildings
         location = new LocationObject("Departement IWT gebouw B","Welkom op het departement Industriële Wetenschappen & Technologie van de UCLL Diepenbeek, U staat nu voor gebouw B."
                 ,50.928697,5.395702,20,0);
@@ -87,6 +89,14 @@ public class DatabaseInitialisation {
         location = new LocationObject("Departement Leraren Opleiding","Welkom op het departement Leraren Opleiding van de UCLL Diepenbeek."
                 ,50.928295,5.397223,20,0);
         dbo.AddLocationToDb(location);
+
+
+        // EXTRA added geolocations and info for testing purpose:
+        //
+        //ADD more geolocations here for testing purposes
+        //
+        //
+        //TODO: ADD more geolocations here for testing purposes
     }
 
 
