@@ -245,8 +245,6 @@ public class DatabaseActivity {
 
         String where = USER_RNUMMER + "= ?";
         String[] whereArgs = {String.valueOf(userRNummer)};
-        //String[] columns = {String.valueOf(USER_NAME_COL),String.valueOf(USER_PASSWORD_COL),
-        //        String.valueOf(USER_DESCRIPTION_COL),String.valueOf(USER_DEPARTMENT_COL)};
 
         openReadableDB();
         Cursor cursor = db.query(USER_TABLE,null,where,whereArgs,null,null,null);
